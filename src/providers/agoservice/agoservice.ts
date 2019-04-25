@@ -15,14 +15,17 @@ export class AgoserviceProvider {
   }
 
   loadAddress() {
-    let fetchedItems = this.httpClient.get('http://localhost:3000/queryremote');
+    // let fetchedItems = this.httpClient.get('http://localhost:3000/queryremote');
+    let fetchedItems = this.httpClient.get('http://agopassport/heroku.com/queryremote');
+
     // let fetchedItems = await this.httpClient.get('http://localhost:3000/auth/arcgis/callback').toPromise();
     console.log(fetchedItems);
     return fetchedItems;
   }
 
   loadItems() {
-    let fetchedItems = this.httpClient.get('http://localhost:3000/listingsremote');
+    // let fetchedItems = this.httpClient.get('http://localhost:3000/listingsremote');
+    let fetchedItems = this.httpClient.get('http://agopassport.herokuapp.com/listingsremote');
     // let fetchedItems = await this.httpClient.get('http://localhost:3000/auth/arcgis/callback').toPromise();
     console.log(fetchedItems);
     return fetchedItems
