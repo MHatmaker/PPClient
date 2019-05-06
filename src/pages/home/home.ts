@@ -11,22 +11,27 @@ export class HomePage {
   private items : any;
   private adrs : any;
   private isHome : boolean = true;
+  private agoToken : string;
+  private agoExpiry : string;
 
   constructor(public navCtrl: NavController, private itemsProvider : AgoserviceProvider) {
     this.isHome = true;
   }
 
-  login(){
-    let lg = this.itemsProvider.auth().subscribe(
+  async login(){
+    let lg = await this.itemsProvider.auth().subscribe(
       data => {
         let d : any = data;
-        this.items = d.results;
+        this.agoToken = d.access_token;
+        this.agoExpiry = d.expires_in;
+        console.log(`token : ${this.agoToken}`);
+        console.log(`expires_in : ${this.agoExpiry}`);
       },
       err => console.error(err),
       // the third argument is a function which runs on completion
       () => console.log('done loading items')
     )
-    console.log(lg);
+
   }
   loadItems(){
     console.log('loadItems called');

@@ -9,6 +9,8 @@ import { Injectable } from '@angular/core';
 */
 @Injectable()
 export class AgoserviceProvider {
+  agoToken : string = "";
+  agoExpiry : string = "";
 
   constructor(public httpClient: HttpClient) {
     console.log('Hello AgoserviceProvider Provider');
@@ -21,6 +23,9 @@ export class AgoserviceProvider {
   }
   auth() {
     let stuff = this.httpClient.get("http://localhost:3000/authremote/arcgis");
+    // this.agoToken = stuff.access_token;
+    // this.agoExpiry = stuff.expires_in;
+    console.log(this.agoToken);
     return stuff;
   }
 
