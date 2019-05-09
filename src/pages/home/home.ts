@@ -57,4 +57,8 @@ export class HomePage {
     )
   }
 
+  loadMap() {
+    this.itemsProvider.loadMap();
+  }
+
 }

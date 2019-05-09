@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { loadModules } from 'esri-loader';
 
 /*
   Generated class for the AgoserviceProvider provider.
@@ -11,6 +12,24 @@ import { Injectable } from '@angular/core';
 export class AgoserviceProvider {
   agoToken : string = "";
   agoExpiry : string = "";
+  webmapId : string = "4c3ccb95474c4c4d89ec191d69ba1080";
+  private esriwebmap;
+  private esrimapview;
+  private esriPoint;
+  private esriSpatialReference;
+
+  async loadEsriModules() {
+      const options = {
+        url: 'https://js.arcgis.com/4.8/'
+      };
+      const [ WebMap, MapView, Point, SpatialReference] = await loadModules(
+        [ 'esri/WebMap', 'esri/views/MapView', 'esri/geometry/Point', 'esri/geometry/SpatialReference'], options);
+
+              this.esriwebmap = WebMap;
+              this.esrimapview = MapView;
+              this.esriPoint = Point;
+              this.esriSpatialReference = SpatialReference;
+    }
 
   constructor(public httpClient: HttpClient) {
     console.log('Hello AgoserviceProvider Provider');
@@ -23,6 +42,18 @@ export class AgoserviceProvider {
   }
   auth() {
     let stuff = this.httpClient.get("http://localhost:3000/authremote/arcgis");
+    let unpacked = stuff.subscribe(
+      data => {
+        let d : any = data;
+        this.agoToken = d.access_token;
+        this.agoExpiry = d.expires_in;
+        console.log(`token : ${this.agoToken}`);
+        console.log(`expires_in : ${this.agoExpiry}`);
+      },
+      err => console.error(err),
+      // the third argument is a function which runs on completion
+      () => console.log('done loading items')
+    );
     // this.agoToken = stuff.access_token;
     // this.agoExpiry = stuff.expires_in;
     console.log(this.agoToken);
@@ -45,6 +76,31 @@ export class AgoserviceProvider {
     console.log(fetchedItems);
     return fetchedItems
 
+  }
+
+  async loadMap() {
+    const options = {
+      url: 'https://js.arcgis.com/4.11/'
+    };
+    const [ WebMap, MapView, Point, SpatialReference] = await loadModules(
+      [ 'esri/WebMap', 'esri/views/MapView', 'esri/geometry/Point', 'esri/geometry/SpatialReference'], options);
+
+    this.esriwebmap = WebMap;
+    this.esrimapview = MapView;
+    this.esriPoint = Point;
+    this.esriSpatialReference = SpatialReference;
+
+    let webmap = new this.esriwebmap({
+      portalItem: {
+        // autocasts as new PortalItem()
+        id: this.webmapId
+      }
+    });
+
+    let view = new this.esrimapview({
+      map: webmap,
+      container: "viewDiv"
+    });
   }
 
 }

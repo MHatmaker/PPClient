@@ -7,29 +7,29 @@
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
-  <div *ngIf="isHome; else notyet">
-      <button ion-button (click)="login()">Login</button>
-      <button ion-button (click)="loadItems()">Load</button>
-      <ion-list>
-        <ion-item *ngFor="let item of items">
-          {{item.snippet}}
-          <!-- <img [src]="item.snippet" /> -->
-        </ion-item>
-      </ion-list>
-  </div>
-  <ng-template #notyet>
-      <button ion-button (click)="home()">Home</button>
-      <button ion-button (click)="search()">Search</button>
-      <ion-item>{{srchResults}}</ion-item>
-      <button ion-button (click)="account()">Account</button>
-      <ion-item>{{adrs}}</ion-item>
-      <button ion-button (click)="loadAddress()">Address</button>
-      <ion-item>{{adrs}}</ion-item>
-      <button ion-button (click)="query()">Query</button>
-      <ion-item>{{qResults}}</ion-item>
-  </ng-template>
+  <ion-card>
+      <div *ngIf="isHome; else notyet">
+          <button ion-button (click)="login()">Login</button>
+          <button ion-button (click)="loadItems()">Load</button>
+          <button ion-button (click)="loadMap()">Load Map</button>
+          <ion-list>
+            <ion-item *ngFor="let item of items">
+              {{item.snippet}}
+              <!-- <img [src]="item.snippet" /> -->
+            </ion-item>
+          </ion-list>
+      </div>
+      <ng-template #notyet>
+          <button ion-button (click)="home()">Home</button>
+          <button ion-button (click)="search()">Search</button>
+          <ion-item>{{srchResults}}</ion-item>
+          <button ion-button (click)="account()">Account</button>
+          <ion-item>{{adrs}}</ion-item>
+          <button ion-button (click)="loadAddress()">Address</button>
+          <ion-item>{{adrs}}</ion-item>
+          <button ion-button (click)="query()">Query</button>
+          <ion-item>{{qResults}}</ion-item>
+      </ng-template>
+  </ion-card>
+  <div id="viewDiv" #map ></div>
 </ion-content>
