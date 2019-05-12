@@ -13,6 +13,7 @@ export class HomePage {
   private isHome : boolean = true;
   private agoToken : string;
   private agoExpiry : string;
+  private snip : string;
 
   constructor(public navCtrl: NavController, private itemsProvider : AgoserviceProvider) {
     this.isHome = true;
@@ -39,6 +40,19 @@ export class HomePage {
       data => {
         let d : any = data;
         this.items = d.results;
+      },
+      err => console.error(err),
+      // the third argument is a function which runs on completion
+      () => console.log('done loading items')
+    )
+  }
+
+  loadItemsRest(){
+    console.log('loadItemsRest called');
+    let items = this.itemsProvider.loadItemsRest().subscribe(
+      data => {
+        let d : any = data;
+        this.snip = d.snippet;
       },
       err => console.error(err),
       // the third argument is a function which runs on completion

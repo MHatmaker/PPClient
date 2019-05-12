@@ -11,6 +11,7 @@
       <div *ngIf="isHome; else notyet">
           <button ion-button (click)="login()">Login</button>
           <button ion-button (click)="loadItems()">Load</button>
+          <button ion-button (click)="loadItemsRest()">Load Rest</button>
           <button ion-button (click)="loadMap()">Load Map</button>
           <ion-list>
             <ion-item *ngFor="let item of items">
@@ -18,6 +19,9 @@
               <!-- <img [src]="item.snippet" /> -->
             </ion-item>
           </ion-list>
+          <ion-item>
+              {{snip}}
+          </ion-item>
       </div>
       <ng-template #notyet>
           <button ion-button (click)="home()">Home</button>
