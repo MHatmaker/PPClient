@@ -1,10 +1,14 @@
 {
   "name": "PPClient",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "ionic-angular",
   "id": "113d9f75",
-  "proxies": [{
-    "path": "/auth/arcgis/callback",
-    "proxyUrl": "http://localhost:3000"
-  }]
+  "proxies": [
+    {
+      "path": "/auth/arcgis/callback",
+      "proxyUrl": "http://localhost:3000"
+    }
+  ]
 }

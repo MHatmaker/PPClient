@@ -30,6 +30,13 @@ plugins/ios.json
 www/
 $RECYCLE.BIN/
 
+.gradle
+config.xml
+gradle/
+gradlew
+gradlew.bat
+resources/
+
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate

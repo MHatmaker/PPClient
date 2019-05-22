@@ -18,22 +18,28 @@ export class AgoserviceProvider {
   private esriPoint;
   private esriSpatialReference;
   private items : any;
+  private esriId;
+  private esriOauthInfo
 
   async loadEsriModules() {
       const options = {
         url: 'https://js.arcgis.com/4.8/'
       };
-      const [ WebMap, MapView, Point, SpatialReference] = await loadModules(
-        [ 'esri/WebMap', 'esri/views/MapView', 'esri/geometry/Point', 'esri/geometry/SpatialReference'], options);
+      const [ WebMap, MapView, Point, SpatialReference, IdentityManager, OAuthInfo] = await loadModules(
+        [ 'esri/WebMap', 'esri/views/MapView', 'esri/geometry/Point', 'esri/geometry/SpatialReference',
+          'esri/identity/IdentityManager', 'esri/identity/OAuthInfo'], options);
 
               this.esriwebmap = WebMap;
               this.esrimapview = MapView;
               this.esriPoint = Point;
               this.esriSpatialReference = SpatialReference;
+              this.esriId = IdentityManager;
+              this.esriOauthInfo = OAuthInfo;
     }
 
   constructor(public httpClient: HttpClient) {
     console.log('Hello AgoserviceProvider Provider');
+    this.loadEsriModules();
   }
 
   login() {
@@ -50,6 +56,7 @@ export class AgoserviceProvider {
         this.agoExpiry = d.expires_in;
         console.log(`token : ${this.agoToken}`);
         console.log(`expires_in : ${this.agoExpiry}`);
+        this.registerToken(data);
       },
       err => console.error(err),
       // the third argument is a function which runs on completion
@@ -100,6 +107,48 @@ export class AgoserviceProvider {
     console.log(fetchedItems);
     return fetchedItems;
   }
+registerToken(tokenInfo) {
+	//The parameters required are not documented. This is why this sample is helpful ;)
+	var credentialsJSON = {
+		serverInfos: [{
+			// server: "https://sampleserver6.arcgisonline.com",
+			server: "https://arcgisonline.com",
+			// tokenServiceUrl: "https://sampleserver6.arcgisonline.com/arcgis/tokens/",
+			tokenServiceUrl: "https://arcgisonline.com/arcgis/tokens/",
+			// adminTokenServiceUrl: "https://sampleserver6.arcgisonline.com/arcgis/admin/generateToken",
+			adminTokenServiceUrl: "https://arcgisonline.com/arcgis/admin/generateToken",
+			shortLivedTokenValidity: 60,
+			currentVersion: 10.41,
+			hasServer: true
+		}],
+		oAuthInfos: [{"tokenServicesUrl":"https://www.arcgis.com/sharing/rest/generateToken","isTokenBasedSecurity":true}],
+		credentials: [{
+			userId: "DArcadian",
+			// server: "https://sampleserver6.arcgisonline.com/arcgis",
+			server: "https://arcgisonline.com",
+			token: tokenInfo.token,
+			expires: tokenInfo.expires,
+			validity: 60,
+			isAdmin: false,
+			ssl: false,
+			//Calculate when the token was created by subtracting 60 minutes from the expiration time
+			creationTime: tokenInfo.expires - (60000 * 60),
+			scope: "server",
+			resources: [
+				// securedService
+			]
+		}]
+	};
+  let tokenprops = {
+    server : 'https://www.arcgis.com/sharing/rest',
+    token : this.agoToken
+  }
+	//Initialize the IdentityManager with the credentials object created above
+	// this.esriId.initialize(credentialsJSON);
+  this.esriId.registerToken(tokenprops);
+	//Now that the token is registered with the IdentityManager the securred layer can be added to the map
+	//addSecureLayer();
+}
 
   async loadMap() {
     const options = {
