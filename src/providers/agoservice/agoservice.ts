@@ -43,12 +43,13 @@ export class AgoserviceProvider {
   }
 
   login() {
-    let stuff = this.httpClient.get("http://localhost:3000/loginremote");
-    // let stuff = this.httpClient.get("http://agopassport/heroku.com/login");
+    // let stuff = this.httpClient.get("http://localhost:3000/loginremote");
+   let stuff = this.httpClient.get("http://agopassport/heroku.com/login");
     return stuff;
   }
   auth() {
-    let stuff = this.httpClient.get("http://localhost:3000/authremote/arcgis");
+    // let stuff = this.httpClient.get("http://localhost:3000/authremote/arcgis");
+    let stuff = this.httpClient.get("https://maplinkr-simpleserver.herokuapp.com/authremote/arcgis");
     let unpacked = stuff.subscribe(
       data => {
         let d : any = data;
@@ -78,8 +79,8 @@ export class AgoserviceProvider {
   }
 
   loadItems() {
-    let fetchedItems = this.httpClient.get('http://localhost:3000/listingsremote');
-    // let fetchedItems = this.httpClient.get('http://agopassport.herokuapp.com/listingsremote');
+    // let fetchedItems = this.httpClient.get('http://localhost:3000/listingsremote');
+    let fetchedItems = this.httpClient.get('https://maplinkr-simpleserver.herokuapp.com/listingsremote');
     // let fetchedItems = await this.httpClient.get('http://localhost:3000/auth/arcgis/callback').toPromise();
     console.log(fetchedItems);
     return fetchedItems

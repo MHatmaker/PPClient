@@ -39,7 +39,7 @@ export class HomePage {
     let items = this.itemsProvider.loadItems().subscribe(
       data => {
         let d : any = data;
-        this.items = d.results;
+        this.items = [d];
       },
       err => console.error(err),
       // the third argument is a function which runs on completion
