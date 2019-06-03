@@ -74,5 +74,16 @@ export class HomePage {
   loadMap() {
     this.itemsProvider.loadMap();
   }
+  query() {
+    this.itemsProvider.query().subscribe(
+      data => {
+        let d : any = data;
+        this.items = d.results;
+      },
+      err => console.error(err),
+      // the third argument is a function which runs on completion
+      () => console.log('done loading items')
+    );
+  }
 
 }

@@ -86,6 +86,25 @@ export class AgoserviceProvider {
     return fetchedItems
 
   }
+  query() {
+    const url : string = 'https://www.arcgis.com/sharing/rest/search?q=Arcadia runs&f=pjson';
+    let fetchedItems =this.httpClient.get(url);
+    let unpacked = fetchedItems.subscribe(
+      data => {
+        this.items = data;
+      },
+      err => console.error(err),
+      // the third argument is a function which runs on completion
+      () => {
+        console.log('done loading items');
+        console.log(this.items);
+        return fetchedItems;
+      }
+    );
+    console.log(unpacked);
+    console.log(fetchedItems);
+    return fetchedItems;
+  }
 
   loadItemsRest() {
     const url : string = 'https://www.arcgis.com/sharing/rest/content/items/4c3ccb95474c4c4d89ec191d69ba1080?f=json&token='
